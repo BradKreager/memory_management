@@ -10,7 +10,7 @@ from pagetable import *
 
 
 class operating_system(object):
-    def  __init__(self, policy = 1, size = 20, paddr = 20, reclaim = True):
+    def  __init__(self, policy = 1, size = 20, paddr = 20, reclaim = False):
         self.__memory = Memory(size)
         self.__proc_addr_size = paddr
         self.__policy = policy
@@ -21,7 +21,7 @@ class operating_system(object):
         self.MMU = MMU(self.__memory)
         self.__swap = []
         self.stats = Stats()
-        self.reclaim_first = reclaim
+        self.reclaim_off = reclaim
 
         random.seed(time.time())
 
@@ -36,7 +36,7 @@ class operating_system(object):
             pg = self.__memory.get_free_page()
         except PageFault as fault:
             print fault.msg
-            if self.reclaim_first:
+            if not self.reclaim_off:
                 if not self.reclaim():
                     self.swap_out()
             else:

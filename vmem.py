@@ -14,7 +14,8 @@ parser = argparse.ArgumentParser(description='Create a data file for memory\
 parser.add_argument('input', metavar='FILE', type=str, help='input data file')
 parser.add_argument('-p', '--pages', nargs='?', type=int, default=20,
                     help='sets number of physical pages')
-# parser.add_argument('-c', '--cycles', nargs='?', type=int, default=20, help='')
+parser.add_argument('-r', '--reclaim', action="store_true", help='Turns\
+                    off reclaiming clean pages before policy reclaim')
 
 args = parser.parse_args()
 
@@ -60,7 +61,7 @@ def run(input):
     try:
         init()
 
-        os = operating_system(input, args.pages, proc_pg_max)
+        os = operating_system(input, args.pages, proc_pg_max, args.reclaim)
 
         for next_action in iter(data_q.pop, None):
             # next_action = data_q.pop()
